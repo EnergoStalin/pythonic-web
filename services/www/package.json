@@ -1,0 +1,13 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "vite src"
+  },
+  "author": "EnergoStalin",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.2",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}

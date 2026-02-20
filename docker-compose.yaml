@@ -1,0 +1,4 @@
+services:
+  www:
+    build:
+      context: services/www
