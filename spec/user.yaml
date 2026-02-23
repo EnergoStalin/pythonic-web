@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/spec.openapis.org/refs/heads/main/oas/3.1/schema/2025-11-23
+openapi: 3.1.0
+
+info:
+  title: User API
+  contact:
+    url: https://t.me/energostalin
+    name: EnergoStalin
+    email: ens.stalin@gmail.com
+  license:
+    name: GPLv3
+  version: 1.0.0
+
+servers:
+  - url: http://127.0.0.1:7728
+    description: Local development server
+
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+          format: password
+        fio:
+          type: string
+        company:
+          type: string
+        position:
+          type: string
+        uuid:
+          type: string
+          format: uuid
+      required:
+        - uuid
+    EditUserConfig:
+      allOf:
+        - $ref: 'auth.yaml#/components/schemas/AuthConfig'
+        - type: object
+          required:
+            - validation
+          properties:
+            validation:
+              type: object
+              required:
+                - fio
+              properties:
+                fio:
+                  $ref: 'auth.yaml#/components/schemas/ValidationRule'
+
+  securitySchemes:
+    token:
+      $ref: 'auth.yaml#/components/securitySchemes/token'
+
+paths:
+  /health:
+    $ref: 'common.yaml#/components/pathItems/health'
+  /user:
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        '200':
+          description: "Обновлено"
+        '400':
+          description: "Валидация провалена"
+        '401':
+          description: "Нет токена"
+        '403':
+          description: "Нет доступа к модификации этого пользователя с таким токеном"
+      security:
+        - token: []
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: "Нет токена"
+      security:
+        - token: []
+  /user/config:
+    get:
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditUserConfig'

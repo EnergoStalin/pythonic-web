@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/spec.openapis.org/refs/heads/main/oas/3.1/schema/2025-11-23
+openapi: 3.1.0
+
+info:
+  title: Storage API
+  contact:
+    url: https://t.me/energostalin
+    name: EnergoStalin
+    email: ens.stalin@gmail.com
+  license:
+    name: GPLv3
+  version: 1.0.0
+
+servers:
+  - url: http://127.0.0.1:7730
+    description: Local development server
+
+components:
+  schemas:
+    FileItem:
+      type: object
+      description: Represents a file in storage
+      properties:
+        name:
+          type: string
+          example: "video_2024.mp4"
+        mime:
+          type: string
+          example: "video/mp4"
+        url:
+          type: string
+          format: uri
+          example: storage/video_2024.mp4
+      required:
+        - name
+        - mime
+        - url
+
+paths:
+  /health:
+    $ref: 'common.yaml#/components/pathItems/health'
+  /storage/{name}:
+    get:
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+      responses:
+        '404':
+          description: ""
+        '200':
+          description: ""
+          headers:
+            Content-Type:
+              description: "Тип контента"
+              required: true
+              schema:
+                type: string
+                example: image
+          content:
+            application/octet-stream: {}
+  /storage:
+    post:
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: array
+                  items:
+                    contentMediaType: image
+          video/mp4:
+            schema:
+              properties:
+                contentMediaType: video
+      responses:
+        '201':
+          description: Файл сохранён
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                default:
+                  value: 437ba4aab62c07e95ce93748b69c48c7b61c97b10b3d78b791a6e4731e2c535
+    get:
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Список файлов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileItem'

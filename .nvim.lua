@@ -10,3 +10,13 @@ overseer.register_template({
 		}
 	end,
 })
+
+overseer.register_template({
+	name = "swagger",
+	builder = function()
+		return {
+			cmd = "docker compose -f swagger-compose.yaml up -d",
+			components = { "default", "unique" }
+		}
+	end,
+})

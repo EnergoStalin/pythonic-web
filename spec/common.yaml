@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/spec.openapis.org/refs/heads/main/oas/3.1/schema/2025-11-23
+openapi: 3.1.0
+
+info:
+  title: Common API
+  contact:
+    url: https://t.me/energostalin
+    name: EnergoStalin
+    email: ens.stalin@gmail.com
+  license:
+    name: GPLv3
+  version: 1.0.0
+
+components:
+  responses:
+    HealthResponse:
+      description: ""
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: OK
+  pathItems:
+    health:
+      get:
+        responses:
+          '200':
+            $ref: '#/components/responses/HealthResponse'
