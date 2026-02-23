@@ -2,3 +2,9 @@ services:
   www:
     build:
       context: services/www
+  ingress:
+    image: nginx:stable-alpine3.23-perl
+    volumes:
+      - ./services/ingress/nginx:/etc/nginx/conf.d
+    ports:
+      - 8080:80
