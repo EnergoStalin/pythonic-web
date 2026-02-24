@@ -8,7 +8,8 @@ info:
     name: EnergoStalin
     email: ens.stalin@gmail.com
   license:
-    name: GPLv3
+    name: WTFNMFPL
+    identifier: WTFNMFPL
   version: 1.0.0
 
 servers:
