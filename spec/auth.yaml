@@ -57,6 +57,16 @@ components:
               $ref: '#/components/schemas/ValidationRule'
             password:
               $ref: '#/components/schemas/ValidationRule'
+    JWTResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
 
   responses:
     JWTResponse:
@@ -64,36 +74,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              token:
-                type: string
-              refreshToken:
-                type: string
-              expiresAt:
-                type: string
-                format: date-time
+            $ref: '#/components/schemas/JWTResponse'
     AuthValidationConfigResponse:
       description: ""
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthConfig'
-    UserValidationConfigResponse:
-      description: ""
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EditUserConfig'
-    ErrorResponse:
-      description: ""
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
 
   requestBodies:
     UserAuth:
@@ -139,3 +126,5 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AuthValidationConfigResponse'
+  /.well-known/jwks.json:
+    $ref: 'jwks.yaml#/components/pathItems/jwks'

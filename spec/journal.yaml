@@ -33,6 +33,8 @@ components:
           type: string
 
 paths:
+  /health:
+    $ref: 'common.yaml#/components/pathItems/health'
   /journal:
     post:
       requestBody:

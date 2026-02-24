@@ -13,14 +13,30 @@ info:
   version: 1.0.0
 
 components:
+  schemas:
+    HealthResponse:
+      type: string
+      example: OK
+    GenericError:
+      type: object
+      properties:
+        error:
+          type: string
+
   responses:
     HealthResponse:
       description: ""
       content:
         text/plain:
           schema:
-            type: string
-            example: OK
+            $ref: '#/components/schemas/HealthResponse'
+    GenericError:
+      description: ""
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+
   pathItems:
     health:
       get:
