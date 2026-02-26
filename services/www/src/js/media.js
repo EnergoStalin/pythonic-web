@@ -1,20 +1,17 @@
-async function *file_iterator() {
-	let page = 1
-	let files = []
-	do {
-		files = await fetch(`${STORAGE_ENDPOINT}?page=${page}`).then(e => e.json())
-		for(const f of files) {
-			yield f
-		}
-		page++;
-	} while(files.length)
-}
+import { STORAGE_ENDPOINT_CONFIG } from "./endpoints"
+import { file_iterator } from "./storage"
 
+/**
+	* @param {import("./endpoints").FileItem} file
+	*/
 function make_node_from_file(file) {
 	if(file.mime.includes("video")) return document.createElement("video")
 	if(file.mime.includes("image")) return document.createElement("img")
 }
 
+/**
+	* @param {HTMLElement} root
+	*/
 async function render(root) {
 	for await(const file of file_iterator()) {
 		const node = make_node_from_file(file)
@@ -27,10 +24,11 @@ async function render(root) {
 async function config() {
 	const config = await fetch(STORAGE_ENDPOINT_CONFIG).then(e => e.json())
 
+	// @ts-ignore
 	upload_input.accept = config.accept
 }
 
-(async function() {
-	await config()
-	await render(container)
-})()
+await config()
+
+// @ts-ignore
+await render(container)
