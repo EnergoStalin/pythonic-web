@@ -2,6 +2,14 @@ services:
   www:
     build:
       context: services/www
+  postgres:
+    image: postgres:18
+    env_file:
+      - services/database/.env
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
+    ports:
+      - 5432:5432
   ingress:
     image: nginx:stable-alpine3.23-perl
     volumes:

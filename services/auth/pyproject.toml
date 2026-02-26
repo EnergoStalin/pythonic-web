@@ -1,0 +1,17 @@
+[project]
+name = "auth"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "asyncpg>=0.31.0",
+    "cryptography>=46.0.5",
+    "fastapi[standard]>=0.133.1",
+    "pyjwt>=2.11.0",
+    "sqlalchemy>=2.0.47",
+    "sqlmodel>=0.0.37",
+]
+
+[dependency-groups]
+dev = [
+    "asyncpg-stubs>=0.31.2",
+]
