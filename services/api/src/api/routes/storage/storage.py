@@ -68,7 +68,7 @@ async def upload_files(
             return Response(f"suffix {suffix} not allowed", HTTPStatus.FORBIDDEN)
 
     _ = await asyncio.gather(*[save_file_chunked(uf) for uf in files])
-    return ""
+    return Response("OK")
 
 
 @router.get("/config")
