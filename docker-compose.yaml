@@ -17,8 +17,11 @@ services:
     environment:
       POSTGRES_HOST: postgres
       STORAGE_PATH: /data/storage
+      ENVIRONMENT: production
+      BASE_URL: http://127.0.0.1:8080
+      WWW_URL: http://127.0.0.1:8080
     volumes:
-      - ./data/storage:/data/storage:rw
+      - ./data/api/storage/pool:/data/api/storage/pool:rw
     networks:
       - ingress
       - postgres

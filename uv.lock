@@ -76,18 +76,18 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiofiles", specifier = ">=25.1.0" },
-    { name = "asyncpg", specifier = ">=0.31.0" },
-    { name = "cryptography", specifier = ">=46.0.5" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.133.1" },
-    { name = "pyjwt", specifier = ">=2.11.0" },
-    { name = "python-multipart", specifier = ">=0.0.22" },
-    { name = "sqlalchemy", specifier = ">=2.0.47" },
-    { name = "sqlmodel", specifier = ">=0.0.37" },
+    { name = "aiofiles", specifier = "==25.1.0" },
+    { name = "asyncpg", specifier = "==0.31.0" },
+    { name = "cryptography", specifier = "==46.0.5" },
+    { name = "fastapi", extras = ["standard"], specifier = "==0.133.1" },
+    { name = "pyjwt", specifier = "==2.11.0" },
+    { name = "python-multipart", specifier = "==0.0.22" },
+    { name = "sqlalchemy", specifier = "==2.0.47" },
+    { name = "sqlmodel", specifier = "==0.0.37" },
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "asyncpg-stubs", specifier = ">=0.31.2" }]
+dev = [{ name = "asyncpg-stubs", specifier = "==0.31.2" }]
 
 [[package]]
 name = "asyncpg"
