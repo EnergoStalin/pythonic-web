@@ -15,7 +15,9 @@ async def lifespan(_: FastAPI):
     await close()
 
 
-app = FastAPI(lifespan=lifespan)
+kwargs = {} if IS_DEV else {"docs_url": None, "redoc_url": None, "openapi_url": None}
+
+app = FastAPI(lifespan=lifespan, *kwargs)
 app.include_router(router)
 
 app.add_middleware(
