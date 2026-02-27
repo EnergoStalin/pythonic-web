@@ -5,8 +5,6 @@ services:
       - services/database/.env
     volumes:
       - ./data/postgres:/var/lib/postgresql:rw
-    ports:
-      - 127.0.0.1:5432:5432
     networks:
       - postgres
   api:
@@ -40,8 +38,20 @@ services:
       - 127.0.0.1:8080:80
     networks:
       - ingress
+  pgadmin:
+    image: elestio/pgadmin:REL-9_12
+    environment:
+      PGADMIN_DEFAULT_EMAIL: e@m.c
+      PGADMIN_DEFAULT_PASSWORD: emc
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "127.0.0.1:${PGADMIN_PORT:-8081}:8080"
+    volumes:
+      - ./data/pgadmin/servers.json:/pgadmin4/servers.json
+    networks:
+      - postgres
+    profiles: [debug]
 
 networks:
   ingress:
   postgres:
-    name: postgres
