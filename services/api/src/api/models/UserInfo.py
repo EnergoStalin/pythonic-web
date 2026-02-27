@@ -5,8 +5,8 @@ class UserInfo(BaseModel):
     user_id: str
     login: str
     password: str
-    last_name: str
-    first_name: str
-    surname: str
-    company_name: str
-    position_name: str
+    last_name: str | None = None
+    first_name: str | None = None
+    surname: str | None = None
+    company_name: str | None = None
+    position_name: str | None = None
