@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from uuid import UUID
 
 import jwt
 from api.models.RefreshToken import RefreshToken
