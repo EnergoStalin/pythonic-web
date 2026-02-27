@@ -25,7 +25,12 @@ UNAUTHORIZED = Response(status_code=HTTPStatus.UNAUTHORIZED)
 
 
 @router.post("")
-async def auth(login: Annotated[str, Form()], password: Annotated[str, Form()], db: DB):
+async def auth(
+    login: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+    db: DB,
+    response: Response,
+):
     user = await user_get_or_create(db, login, password)
     if not user:
         return UNAUTHORIZED
@@ -37,6 +42,7 @@ async def auth(login: Annotated[str, Form()], password: Annotated[str, Form()], 
 
     token, token_expires = create_access_token(user.id.hex, login)
 
+    response.set_cookie("token", token, expires=token_expires)
     return TokenResponse(
         token=token,
         refresh_token=refresh_token,
