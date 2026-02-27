@@ -6,10 +6,11 @@
 	<body>
 		<div>
 			<div id="container"/>
-				<form action="/storage" name="upload" method="post">
-					<input id="upload_input" name="files" type="file" multiple="true"/>
+				<form action="/storage" method="post" enctype="multipart/form-data">
+					<input id="files" name="files" type="file" multiple="true"/>
+          <input type="submit"/>
 				</form>
 		</div>
-		<script src="/js/media.js" type="text/javascript"></script>
+		<script type="module" src="/js/media.js"></script>
 	</body>
 </html>

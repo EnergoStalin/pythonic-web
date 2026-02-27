@@ -1,4 +1,4 @@
-import { STORAGE_ENDPOINT } from "./endpoints"
+import { STORAGE_ENDPOINT } from "./endpoints.js"
 
 
 export async function *file_iterator() {

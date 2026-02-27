@@ -1,5 +1,8 @@
-import { STORAGE_ENDPOINT_CONFIG } from "./endpoints"
-import { file_iterator } from "./storage"
+import { update_form_action } from "./common.js"
+import { STORAGE_ENDPOINT_CONFIG } from "./endpoints.js"
+import { file_iterator } from "./storage.js"
+
+update_form_action()
 
 /**
 	* @param {import("./endpoints").FileItem} file

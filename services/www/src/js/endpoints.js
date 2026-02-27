@@ -1,4 +1,4 @@
-export const BASE_URL = "http://127.0.0.1:7727";
+export const BASE_URL = "http://127.0.0.1:8001";
 
 export const JOURNAL_ENDPOINT = `${BASE_URL}/journal`;
 

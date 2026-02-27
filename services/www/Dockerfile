@@ -2,5 +2,5 @@
 FROM nginx:stable-alpine3.23-perl
 WORKDIR /www
 
-COPY ./src/ .
 COPY ./nginx/ /etc/nginx/conf.d/
+COPY ./src/ .

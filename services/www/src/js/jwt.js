@@ -1,4 +1,7 @@
-function decodeJWT(token) {
+/**
+  * @param {string} token
+  */
+export function decodeJWT(token) {
 	try {
 		// Split the token into parts
 		const parts = token.split('.');
