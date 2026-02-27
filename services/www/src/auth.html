@@ -1,22 +1,20 @@
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Авторизация</title>
-		<link rel="stylesheet" href="/styles/auth.css"/>
-	</head>
-	<body>
-		<div>
-			<form id="form" action="/auth" method="post" name="authorization" required>
-				<!-- логин, пароль, ФИО, компания, должность -->
-				<p id="fio_description"></p>
-				<input name="fio" id="fio" type="text" placeholder="ФИО" required>
-				<input name="company" id="company" type="text" placeholder="Компания" required>
-				<input name="position" id="position" type="text" placeholder="Должность" required>
-				<input name="login" id="login" type="text" placeholder="Логин" required>
-				<input name="password" id="password" type="password" placeholder="Пароль" required>
-				<p id="password_description"></p>
-			</form>
-		</div>
-		<script type="module" src="/js/auth.js"/></script>
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="/styles/auth.css"/>
+  </head>
+  <body>
+    <div>
+      <form id="form" action="/auth" method="post" name="authorization" required>
+        <!-- логин, пароль, ФИО, компания, должность -->
+        <p id="fio_description"></p>
+        <input name="login" id="login" type="text" placeholder="Логин" required/>
+        <input name="password" id="password" type="password" placeholder="Пароль" required/>
+        <input type="submit"/>
+        <p id="password_description"></p>
+      </form>
+    </div>
+    <script type="module" src="/js/auth.js"></script>
+  </body>
 </html>

@@ -1,4 +1,7 @@
+import { update_form_action } from "./common.js";
 import { AUTH_CONFIG_ENDPOINT } from "./endpoints.js"
+
+update_form_action()
 
 const config = await fetch(AUTH_CONFIG_ENDPOINT).then(e => e.json());
 
