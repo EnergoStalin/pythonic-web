@@ -1,9 +1,0 @@
-services:
-  swagger:
-    image: swaggerapi/swagger-ui
-    environment:
-      SWAGGER_JSON: /spec/user.yaml
-    volumes:
-      - ./spec:/spec
-    ports:
-      - 8090:8080

@@ -4,15 +4,8 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = []
 
-[dependency-groups]
-dev = [
-    "openapi-generator-cli>=7.20.0",
-]
-
 [tool.uv.workspace]
 members = [
-    "services/auth",
+    "services/api",
+    "services/journal",
 ]
-
-[tool.isort]
-profile = "black"

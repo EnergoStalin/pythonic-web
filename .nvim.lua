@@ -1,11 +1,13 @@
 local overseer = require('overseer')
 
+local cwd = vim.fn.getcwd()
+
 overseer.register_template({
   name = "vite",
   builder = function()
     return {
       cmd = "pnpm serve",
-      cwd = vim.fs.joinpath(vim.fn.getcwd(), "services", "www"),
+      cwd = vim.fs.joinpath(cwd, "services", "www"),
       components = { "default", "unique" }
     }
   end,
@@ -22,11 +24,14 @@ overseer.register_template({
 })
 
 overseer.register_template({
-  name = "auth",
+  name = "api",
   builder = function()
     return {
-      cmd = "uv run fastapi dev --port 8001 src/auth/main.py",
-      cwd = vim.fs.joinpath(vim.fn.getcwd(), "services", "auth"),
+      cmd = "uv run fastapi dev --port 8001 src/api/main.py",
+      cwd = vim.fs.joinpath(cwd, "services", "api"),
+      env = {
+        STORAGE_POOL_PATH = vim.fs.joinpath(cwd, "data", "api", "storage", "pool"),
+      },
       components = { "default", "unique" }
     }
   end,

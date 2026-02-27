@@ -1,18 +1,44 @@
 services:
-  www:
-    build:
-      context: services/www
   postgres:
     image: postgres:18
     env_file:
       - services/database/.env
     volumes:
-      - ./data/postgres:/var/lib/postgresql
+      - ./data/postgres:/var/lib/postgresql:rw
     ports:
-      - 5432:5432
+      - 127.0.0.1:5432:5432
+    networks:
+      - postgres
+  api:
+    build:
+      context: services/api
+    env_file:
+      - services/database/.env
+    environment:
+      POSTGRES_HOST: postgres
+      STORAGE_PATH: /data/storage
+    volumes:
+      - ./data/storage:/data/storage:rw
+    networks:
+      - ingress
+      - postgres
+  www:
+    build:
+      context: services/www
+    volumes:
+      - ./services/www/src:/www:ro
+    networks:
+      - ingress
   ingress:
     image: nginx:stable-alpine3.23-perl
     volumes:
-      - ./services/ingress/nginx:/etc/nginx/conf.d
+      - ./services/ingress/nginx:/etc/nginx/conf.d:ro
     ports:
-      - 8080:80
+      - 127.0.0.1:8080:80
+    networks:
+      - ingress
+
+networks:
+  ingress:
+  postgres:
+    name: postgres

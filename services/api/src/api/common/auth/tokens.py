@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from uuid import UUID
 
 import jwt
+from api.models.RefreshToken import RefreshToken
+from api.models.Token import Token
 from pydantic import BaseModel
 
 from .jwks import get_private_key, get_public_key
@@ -19,7 +21,7 @@ def get_expires(delta: timedelta | None = None):
     return expire
 
 
-def create_access_token(
+def create_jwt(
     data: BaseModel,
     expires: datetime | None = None,
 ):
@@ -31,3 +33,18 @@ def create_access_token(
     )
 
     return encoded_jwt
+
+
+def create_access_token(
+    user_id: str,
+    login: str,
+):
+    expires = get_expires(timedelta(minutes=15))
+    return create_jwt(Token(user_id=user_id, login=login), expires), expires
+
+
+def create_refresh_token(
+    user_id: str,
+):
+    expires = get_expires(timedelta(days=1))
+    return create_jwt(RefreshToken(user_id=user_id), expires), expires
