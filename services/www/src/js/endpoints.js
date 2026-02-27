@@ -23,10 +23,12 @@ export const AUTH_CONFIG_ENDPOINT = `${AUTH_ENDPOINT}/config`;
  * @property {string} url
  */
 
+export const STORAGE_ENDPOINT = `${BASE_URL}/storage`
+
 /**
  * @typedef {FileItem[]} GetStorageEndpointResponse
  */
-export const STORAGE_ENDPOINT = `${BASE_URL}/storage`
+export const STORAGE_FILES_ENDPOINT = `${STORAGE_ENDPOINT}/files`
 
 /*
 	{ GET
