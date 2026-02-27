@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from api.config import WWW_URL
+from api.config import IS_DEV, WWW_URL
 from api.db.connection import close, init
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,7 +10,7 @@ from .routes import router
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    await init()
+    await init(IS_DEV)
     yield
     await close()
 
