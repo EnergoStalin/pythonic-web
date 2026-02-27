@@ -18,8 +18,8 @@ services:
       POSTGRES_HOST: postgres
       STORAGE_POOL_PATH: /app/data/storage/pool
       ENVIRONMENT: ${ENVIRONMENT:-development}
-      BASE_URL: http://${DOMAIN-:127.0.0.1}:${PORT:-8080}
-      WWW_URL: http://${DOMAIN-:127.0.0.1}:${PORT:-8080}
+      BASE_URL: http://${DOMAIN:-127.0.0.1}:${PORT:-8080}
+      WWW_URL: http://${DOMAIN:-127.0.0.1}:${PORT:-8080}
     volumes:
       - ./data/api:/app/data:rw
     networks:
