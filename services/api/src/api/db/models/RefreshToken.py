@@ -7,13 +7,12 @@ from sqlmodel import Field, SQLModel
 
 class RefreshToken(SQLModel, table=True):
     user_id: UUID = Field(
+        primary_key=True,
         foreign_key="user.id",
         nullable=False,
         ondelete="CASCADE",
-        unique=True,
-        index=True,
+        unique=True
     )
-    id: int | None = Field(default=None, primary_key=True, nullable=False)
     token: str = Field(max_length=1024, nullable=False)
     expire_at: datetime = Field(
         nullable=False,

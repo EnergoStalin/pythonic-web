@@ -4,13 +4,12 @@ from sqlmodel import Field, SQLModel
 
 
 class UserInfo(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True, nullable=False)
     user_id: UUID = Field(
+        primary_key=True,
         foreign_key="user.id",
         nullable=False,
         unique=True,
-        ondelete="CASCADE",
-        index=True,
+        ondelete="CASCADE"
     )
     last_name: str = Field(max_length=50, nullable=False)
     first_name: str = Field(max_length=50, nullable=False)
