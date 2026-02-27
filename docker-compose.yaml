@@ -1,5 +1,6 @@
 services:
   postgres:
+    user: ${UID:-1000}:${GID:-1000}
     image: postgres:18
     env_file:
       - services/database/.env
@@ -13,13 +14,14 @@ services:
     env_file:
       - services/database/.env
     environment:
+      PORT: ${PORT:-80}
       POSTGRES_HOST: postgres
-      STORAGE_PATH: /data/storage
-      ENVIRONMENT: production
-      BASE_URL: http://127.0.0.1:8080
-      WWW_URL: http://127.0.0.1:8080
+      STORAGE_POOL_PATH: /app/data/storage/pool
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      BASE_URL: http://${DOMAIN-:127.0.0.1}:${PORT:-8080}
+      WWW_URL: http://${DOMAIN-:127.0.0.1}:${PORT:-8080}
     volumes:
-      - ./data/api/storage/pool:/data/api/storage/pool:rw
+      - ./data/api:/app/data:rw
     networks:
       - ingress
       - postgres
@@ -35,7 +37,7 @@ services:
     volumes:
       - ./services/ingress/nginx:/etc/nginx/conf.d:ro
     ports:
-      - 127.0.0.1:8080:80
+      - 127.0.0.1:${PORT:-8080}:80
     networks:
       - ingress
   pgadmin:
