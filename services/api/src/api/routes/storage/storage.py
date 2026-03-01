@@ -1,11 +1,8 @@
 import asyncio
 import mimetypes
 from http import HTTPStatus
-from itertools import islice
-from os import scandir
 from pathlib import Path as FSPath
 from typing import Annotated
-from urllib.parse import quote, urljoin
 
 from api.config import BASE_URL
 from fastapi import UploadFile
@@ -15,7 +12,7 @@ from fastapi.responses import FileResponse, Response
 from fastapi.routing import APIRouter
 
 from .config import SPOOL_PATH
-from .fs import save_file_chunked
+from .fs import create_file_url, get_directory_slice, save_file_chunked
 from .models.FileInfo import FileInfo
 from .models.StorageConfig import StorageConfig
 
@@ -35,26 +32,21 @@ async def list_files(
     page: Annotated[int, Query()] = 1,
     limit: Annotated[int, Query()] = 20,
 ):
-    prefix = FSPath(request.url.path)
-
-    start = (page - 1) * limit
-    end = start + limit
-    slice = islice(filter(lambda fp: fp.is_file(), scandir(SPOOL_PATH)), start, end)
-
     return [
         FileInfo(
             name=d.name,
             mime=guess_mime(d.name),
-            url=urljoin(BASE_URL, prefix.joinpath(quote(d.name)).as_posix()),
+            url=create_file_url(BASE_URL, FSPath(request.url.path), d.name),
         )
-        for d in slice
+        for d in get_directory_slice(SPOOL_PATH, page, limit)
     ]
 
 
 @router.get("/files/{name}")
 async def get_file(name: Annotated[str, Path()]):
     path = SPOOL_PATH.joinpath(name)
-    return FileResponse(path, media_type=guess_mime(path.as_posix()))
+    mime = guess_mime(path.as_posix())
+    return FileResponse(path, media_type=mime)
 
 
 # Было бы время написал бы свою реализацию но осталось около 10 часов а я уже почти никакой хоть и встал в 7 утра так что так
@@ -62,11 +54,12 @@ async def get_file(name: Annotated[str, Path()]):
 async def upload_files(
     files: Annotated[list[UploadFile], File(description="Multiple files")],
 ):
-    for uf in filter(lambda uf: uf.filename, files):
-        if (
-            suffix := FSPath(uf.filename).suffix  # pyright: ignore[reportArgumentType]
-        ) not in ACCEPTED_EXTENSIONS:
-            return Response(f"suffix {suffix} not allowed", HTTPStatus.FORBIDDEN)
+    for uf in files:
+        if not uf.filename:
+            return Response(f"unknown filename is not allowed", HTTPStatus.FORBIDDEN)
+
+        if (suffix := FSPath(uf.filename).suffix) not in ACCEPTED_EXTENSIONS:
+            return Response(f"suffix {suffix} is not allowed", HTTPStatus.FORBIDDEN)
 
     _ = await asyncio.gather(*[save_file_chunked(uf) for uf in files])
     return Response("OK")
