@@ -1,8 +1,9 @@
 from api.common.auth.security import VerifiedUser
 from api.db.connection import DB
 from api.db.operations.user_info import user_info_get_by_user_id
-from api.models.UserInfo import UserInfo
 from fastapi.routing import APIRouter
+
+from .models.UserInfo import UserInfo
 
 router = APIRouter()
 

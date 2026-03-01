@@ -1,9 +1,9 @@
 from fastapi.routing import APIRouter
 
-from .auth import router as auth
+from .auth.auth import router as auth
 from .root import router as root
-from .storage import router as storage
-from .user import router as user
+from .storage.storage import router as storage
+from .user.user import router as user
 
 router = APIRouter()
 

@@ -8,15 +8,16 @@ from typing import Annotated
 from urllib.parse import quote, urljoin
 
 from api.config import BASE_URL
-from api.models.FileInfo import FileInfo
-from api.models.StorageConfig import StorageConfig
-from api.routes.storage.config import SPOOL_PATH
-from api.routes.storage.fs import save_file_chunked
 from fastapi import UploadFile
 from fastapi.params import File, Path, Query
 from fastapi.requests import Request
 from fastapi.responses import FileResponse, Response
 from fastapi.routing import APIRouter
+
+from .config import SPOOL_PATH
+from .fs import save_file_chunked
+from .models.FileInfo import FileInfo
+from .models.StorageConfig import StorageConfig
 
 router = APIRouter()
 

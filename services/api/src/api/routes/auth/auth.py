@@ -4,20 +4,21 @@ from uuid import UUID
 
 import jwt
 from api.common.auth.jwks import get_public_key
-from api.common.auth.tokens import create_access_token, create_refresh_token
+from api.common.models.Validator import Validator
 from api.db.connection import DB
 from api.db.operations.refresh_token import (
     refresh_token_update_or_create,
     refresh_token_validate,
 )
 from api.db.operations.user import user_get_by_id, user_get_or_create
-from api.models.AuthConfig import AuthConfig, Validation
-from api.models.RefreshToken import RefreshToken as RefreshTokenJson
-from api.models.TokenResponse import TokenResponse
-from api.models.Validator import Validator
 from fastapi.params import Form
 from fastapi.responses import Response
 from fastapi.routing import APIRouter
+
+from .models.AuthConfig import AuthConfig, Validation
+from .models.RefreshToken import RefreshToken as RefreshTokenJson
+from .models.TokenResponse import TokenResponse
+from .tokens import create_access_token, create_refresh_token
 
 router = APIRouter()
 

@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from api.models.RefreshToken import RefreshToken
-from api.models.Token import Token
+from api.common.auth.jwks import get_private_key, get_public_key
+from api.common.models.UserToken import UserToken
 from pydantic import BaseModel
 
-from .jwks import get_private_key, get_public_key
+from .models.RefreshToken import RefreshToken
 
 
 def get_default_max_age():
@@ -39,7 +39,7 @@ def create_access_token(
     login: str,
 ):
     expires = get_expires(timedelta(minutes=15))
-    return create_jwt(Token(user_id=user_id, login=login), expires), expires
+    return create_jwt(UserToken(user_id=user_id, login=login), expires), expires
 
 
 def create_refresh_token(

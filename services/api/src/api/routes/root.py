@@ -1,5 +1,5 @@
 from api.common.auth.jwks import get_jwks
-from api.models.JWKS import JWKS
+from api.common.auth.models.JWKS import JWKS
 from fastapi.routing import APIRouter
 
 router = APIRouter()

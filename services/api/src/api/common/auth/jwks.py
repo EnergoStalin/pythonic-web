@@ -1,6 +1,6 @@
 import base64
 
-from api.models.JWKS import JWK, JWKS
+from api.common.auth.models.JWKS import JWK, JWKS
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.serialization import (
     Encoding,
