@@ -1,0 +1,17 @@
+services:
+  postgres:
+    ports:
+      - 127.0.0.1:5432:5432
+  pgadmin:
+    image: elestio/pgadmin:REL-9_12
+    environment:
+      PGADMIN_DEFAULT_EMAIL: e@m.c
+      PGADMIN_DEFAULT_PASSWORD: emc
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "127.0.0.1:${PGADMIN_PORT:-8081}:8080"
+    volumes:
+      - ./data/pgadmin/servers.json:/pgadmin4/servers.json
+    restart: unless-stopped
+    networks:
+      - postgres
