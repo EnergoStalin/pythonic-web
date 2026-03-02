@@ -4,6 +4,7 @@ from uuid import UUID
 
 import jwt
 from api.common.auth.jwks import get_public_key
+from api.common.auth.security import decode_token
 from api.common.models.Validator import Validator
 from api.db.connection import DB
 from api.db.operations.refresh_token import (
@@ -54,12 +55,7 @@ async def auth(
 
 @router.post("/refresh")
 async def refresh(token: Annotated[str, Form()], db: DB):
-    try:
-        refresh_token = RefreshTokenJson.model_validate(
-            jwt.decode(token, get_public_key(), verify=True)
-        )
-    except jwt.DecodeError as ex:
-        return Response(str(ex), HTTPStatus.FORBIDDEN)
+    refresh_token = RefreshTokenJson.model_validate(decode_token(token))
 
     if await refresh_token_validate(db, token) is None:
         return UNAUTHORIZED
@@ -78,10 +74,7 @@ async def refresh(token: Annotated[str, Form()], db: DB):
 
 @router.post("/validate")
 async def authme(token: Annotated[str, Form()]):
-    try:
-        return jwt.decode(token, get_public_key(), verify=True)
-    except jwt.DecodeError as ex:
-        return Response(str(ex), HTTPStatus.FORBIDDEN)
+    return decode_token(token)
 
 
 @router.get("/config", response_model=AuthConfig)
