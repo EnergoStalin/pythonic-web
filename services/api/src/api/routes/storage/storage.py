@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse, Response
 from fastapi.routing import APIRouter
 
 from .config import SPOOL_PATH
-from .fs import create_file_url, get_directory_slice, save_file_chunked
+from .fs import create_file_url, ensure_free_space, get_directory_slice, save_file_chunked
 from .models.FileInfo import FileInfo
 from .models.StorageConfig import StorageConfig
 
@@ -54,14 +54,23 @@ async def get_file(name: Annotated[str, Path()]):
 async def upload_files(
     files: Annotated[list[UploadFile], File(description="Multiple files")],
 ):
+    total = 0
+
     for uf in files:
         if not uf.filename:
             return Response(f"unknown filename is not allowed", HTTPStatus.FORBIDDEN)
 
+        if not uf.size:
+            return Response(f"unknown filesize is not allowed", HTTPStatus.FORBIDDEN)
+
         if (suffix := FSPath(uf.filename).suffix) not in ACCEPTED_EXTENSIONS:
             return Response(f"suffix {suffix} is not allowed", HTTPStatus.FORBIDDEN)
 
+        total += uf.size
+
+    ensure_free_space(SPOOL_PATH, total)
     _ = await asyncio.gather(*[save_file_chunked(uf) for uf in files])
+
     return Response("OK")
 
 

@@ -1,3 +1,4 @@
+import shutil
 from itertools import islice
 from os import scandir
 from pathlib import Path
@@ -10,10 +11,7 @@ from .config import SPOOL_PATH
 
 
 async def save_file_chunked(uf: UploadFile, chunk_size: int = 1024 * 1024):
-    if not uf.filename:
-        raise ValueError("Filename is None")
-
-    fp = SPOOL_PATH.joinpath(uf.filename)
+    fp = SPOOL_PATH.joinpath(uf.filename)  # pyright: ignore[reportArgumentType]
 
     try:
         async with aiofiles.open(fp, "wb") as f:
@@ -37,3 +35,15 @@ def get_directory_slice(root: Path, page: int, limit: int):
 
 def create_file_url(base_url: str, prefix: Path, name: str):
     return urljoin(base_url, prefix.joinpath(quote(name)).as_posix())
+
+def ensure_free_space(path: Path, size: int):
+    usage = shutil.disk_usage(path)
+    if usage.free > size:
+        return
+
+    file_mtimes = [(e.name, e.stat().st_mtime) for e in scandir(path) if e.is_file()]
+    needed = size - usage.free
+    for f, s in sorted(file_mtimes, key=lambda x: x[1]):
+        if needed <= 0: return
+        path.joinpath(f).unlink()
+        needed -= s
