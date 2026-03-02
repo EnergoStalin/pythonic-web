@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import IS_DEV, WWW_URL
 from .db.connection import close, init
-from .middlewares.error import ErrorMiddleware
+from .middlewares.JSONError import JSONErrorMiddleware
 from .routes import router
 
 
@@ -21,6 +21,7 @@ kwargs = {} if IS_DEV else {"docs_url": None, "redoc_url": None, "openapi_url": 
 app = FastAPI(lifespan=lifespan, *kwargs)
 app.include_router(router)
 
+app.add_middleware(JSONErrorMiddleware, is_dev=IS_DEV)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[WWW_URL],
