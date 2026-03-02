@@ -31,9 +31,13 @@ async def auth(
     db: DB,
     response: Response,
 ):
+    """
+    Принимает логин/пароль в x-form-urlencoded создавая пользователя(при необходимости) возвращая access_token refresh_token и expires_at для access_tokenа.
+    refresh_token всегда хранится один в базе до следующего обращения к эндпоинту где он проверяется на истечение срока и удаляется если уже истёк.
+    """
     user = await user_get_or_create(db, login, password)
 
-    if not user:
+    if not user:  # Юзер был да пароль не тот
         return UNAUTHORIZED
 
     refresh_token, refresh_token_expires = create_refresh_token(user.id.hex)
@@ -51,8 +55,9 @@ async def auth(
     )
 
 
-@router.post("/refresh")
+@router.post("/refresh", response_model=TokenResponse)
 async def refresh(token: Annotated[str, Form()], db: DB):
+    """ Выписывает новый access_token """
     refresh_token = RefreshTokenJson.model_validate(decode_token(token))
 
     if await refresh_token_validate(db, token) is None:
@@ -61,10 +66,10 @@ async def refresh(token: Annotated[str, Form()], db: DB):
     user_id = refresh_token.user_id
 
     user = await user_get_by_id(db, UUID(hex=user_id))
-    if not user:
-        return Response(status_code=HTTPStatus.NOT_FOUND)
+    assert user  # Никогда не NONE после успешного refresh_token_validate гарантировано ondelete="CASCADE"
 
     new_token, new_token_expires = create_access_token(user_id, user.login)
+
     return TokenResponse(
         token=new_token, refresh_token=token, expires_at=new_token_expires
     )
