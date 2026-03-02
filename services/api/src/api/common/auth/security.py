@@ -4,14 +4,13 @@ from uuid import UUID
 
 import jwt
 from api.common.auth.jwks import get_public_key
+from api.common.models.UserToken import UserToken
 from api.db.connection import DB
 from api.db.models.User import User
 from api.db.operations.user import user_get_by_id
 from fastapi import Depends
 from fastapi.exceptions import HTTPException
 from fastapi.security import APIKeyCookie
-
-from api.common.models.UserToken import UserToken
 
 
 def decode_access_token(token: str):
