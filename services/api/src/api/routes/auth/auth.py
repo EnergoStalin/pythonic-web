@@ -70,11 +70,6 @@ async def refresh(token: Annotated[str, Form()], db: DB):
     )
 
 
-@router.post("/validate")
-async def authme(token: Annotated[str, Form()]):
-    return decode_token(token)
-
-
 @router.get("/config", response_model=AuthConfig)
 async def config():
     return AuthConfig(
