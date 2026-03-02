@@ -25,7 +25,5 @@ app.add_middleware(JSONErrorMiddleware, is_dev=IS_DEV)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[WWW_URL],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET,POST,PUT"],
 )
