@@ -26,7 +26,7 @@ async def getme(verified_user: VerifiedUser, db: DB):
 
 @router.put("/me")
 async def putme(
-    verified_user: VerifiedUser, patch: Annotated[UserInfo, Body()], db: DB
+    verified_user: VerifiedUser, patch: Annotated[UserInfo, Body(strict=True)], db: DB
 ):
     pdict = patch.model_dump(exclude={"user_id"})
 
