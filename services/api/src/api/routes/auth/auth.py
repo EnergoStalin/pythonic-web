@@ -33,6 +33,7 @@ async def auth(
     response: Response,
 ):
     user = await user_get_or_create(db, login, password)
+
     if not user:
         return UNAUTHORIZED
 

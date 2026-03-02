@@ -1,10 +1,11 @@
 from contextlib import asynccontextmanager
 
-from api.config import IS_DEV, WWW_URL
-from api.db.connection import close, init
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .config import IS_DEV, WWW_URL
+from .db.connection import close, init
+from .middlewares.error import ErrorMiddleware
 from .routes import router
 
 
