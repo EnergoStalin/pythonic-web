@@ -2,8 +2,6 @@ from http import HTTPStatus
 from typing import Annotated
 from uuid import UUID
 
-import jwt
-from api.common.auth.jwks import get_public_key
 from api.common.auth.security import decode_token
 from api.common.models.Validator import Validator
 from api.db.connection import DB
@@ -12,11 +10,11 @@ from api.db.operations.refresh_token import (
     refresh_token_validate,
 )
 from api.db.operations.user import user_get_by_id, user_get_or_create
+from api.routes.auth.models.AuthConfig import AuthConfig, Validation
 from fastapi.params import Form
 from fastapi.responses import Response
 from fastapi.routing import APIRouter
 
-from .models.AuthConfig import AuthConfig, Validation
 from .models.RefreshToken import RefreshToken as RefreshTokenJson
 from .models.TokenResponse import TokenResponse
 from .tokens import create_access_token, create_refresh_token
